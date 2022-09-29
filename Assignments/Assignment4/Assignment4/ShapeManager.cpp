@@ -19,19 +19,48 @@ void ShapeManager::showMenu()
 	cout << "    C : Clear all shapes" << endl;
 	cout << endl;
 
-	cout << "    E : toggle Edit mode" << endl;								// PS04
+	cout << "    E : toggle Edit mode" << endl;								    // PS04
 	cout << "  \< \> : cycle through shapes to select current shape" << endl;	// PS04 (use FSKEY_COMMA and FSKEY_DOT)
-	cout << "    P : toggle showing of Points" << endl;						// PS04
-	cout << "    H : change Hue angle of shape by +10 deg" << endl;			// PS04
-	cout << "    Z : Zoom into just the current shape" << endl;			// PS04
-	cout << "    S : Save the current shape" << endl;			// PS04
+	cout << "    P : toggle showing of Points" << endl;						    // PS04
+	cout << "    H : change Hue angle of shape by +10 deg" << endl;			    // PS04
+	cout << "    Z : Zoom into just the current shape" << endl;			        // PS04
+	cout << "    S : Save the current shape" << endl;			                // PS04
 	cout << endl;
 
 	cout << "  ESC : exit program" << endl;
 }
 
+// TODO
 void ShapeManager::resetView()
 {
+	// find lower bound and upper bound for all shapes
+	if (theShapes.size() > 0) {
+		Point2D overallLowerB = theShapes.at(0).getLowerBound();
+		Point2D overallUpperB = theShapes.at(0).getUpperBound();
+
+		Point2D curLowerB = theShapes.at(0).getLowerBound();
+		Point2D curUpperB = theShapes.at(0).getUpperBound();
+
+		for (int i = 1; i < theShapes.size(); i++) {
+			curLowerB = theShapes[i].getLowerBound();
+			curUpperB = theShapes[i].getUpperBound();
+			if (curLowerB.x < overallLowerB.x) {
+				overallLowerB.x = curLowerB.x;
+			}
+			if (curLowerB.y < overallLowerB.y) {
+				overallLowerB.y = curLowerB.y;
+			}
+			if (curUpperB.x > overallUpperB.x) {
+				overallUpperB.x = curUpperB.x;
+			}
+			if (curUpperB.y > overallUpperB.y) {
+				overallUpperB.y = curUpperB.y;
+			}
+		}
+
+		// call other function
+		resetView(overallLowerB, overallUpperB);
+	}
 }
 
 void ShapeManager::resetView(Point2D lowerB, Point2D upperB)
@@ -39,8 +68,8 @@ void ShapeManager::resetView(Point2D lowerB, Point2D upperB)
 	int extraBorder = 24; // allows for some space around all shape(s)
 
 	// Determine needed scale to completely fill in the screen.
-	// We do it for each direction and then choose smallest as overall 
-	// new scale, leaving blank space for other direction 
+	// We do it for each direction and then choose smallest as overall?
+	// new scale, leaving blank space for other direction?
 
 	float horzScale = (winWidth - extraBorder) / (upperB.x - lowerB.x);
 	float vertScale = (winHeight - extraBorder) / (upperB.y - lowerB.y);
@@ -49,7 +78,7 @@ void ShapeManager::resetView(Point2D lowerB, Point2D upperB)
 	// To adjust panX and panY, we need to put center of all shapes
 	// at the center of screen. Thus, we first pan to center of screen
 	// and then pan from center of shapes (average of shape bounds)
-	// to world 0,0  , converted to pixels. Note minus for x (moving left)
+	// to world 0,0 ? converted to pixels. Note minus for x (moving left)
 	// and plus for y (moving down) since we are using pixel dimensions
 
 	panX = winWidth / 2. - (upperB.x + lowerB.x) / 2. * scale;
@@ -145,40 +174,118 @@ bool ShapeManager::manage()
 		break;
 	case FSKEY_MINUS: scale /= 1.05;
 		break;
+	case FSKEY_R: resetView();
+		break;
+	case FSKEY_E:
+		inEditMode = !inEditMode;
+		if (inEditMode) {
+			if (theShapes.size() == 0) {
+				inEditMode = false;
+				std::cout << "You can't get into edit mode because there is no shape." << std::endl;
+			}
+			else {
+				std::cout << "You are in edit mode now." << std::endl;
+			}
+		}
+		else {
+			std::cout << "You leave edit mode now." << std::endl;
+			for (auto& currShape : theShapes) {
+				currShape.colorOverride = -1.0;
+			}
+		}
+		break;
+	}
+
+	//cout << "    H : change Hue angle of shape by +10 deg" << endl;			    // PS04
+	//cout << "    S : Save the current shape" << endl;			                // PS04
+
+	if (inEditMode) {
+		switch (key) {
+		case FSKEY_COMMA: // cycle through shapes to select current shape
+			// the initial value of currShape = -1
+			if (currShape == -1) {
+				currShape = 0;
+				theShapes[currShape].colorOverride = 1.0;
+				break;
+			}
+			else {
+				theShapes[currShape].colorOverride = -1.0;
+				currShape--;
+				if (currShape < 0) {
+					currShape = 0;
+				}
+				theShapes[currShape].colorOverride = 1.0;
+				break;
+			}
+		case FSKEY_DOT: // cycle through shapes to select current shape
+			// the initial value of currShape = -1
+			if (currShape == -1) {
+				currShape = 0;
+				theShapes[currShape].colorOverride = 1.0;
+				break;
+			}
+			else {
+				theShapes[currShape].colorOverride = -1.0;
+				currShape++;
+				if (currShape > theShapes.size() - 1) {
+					currShape = theShapes.size() - 1;
+				}
+				theShapes[currShape].colorOverride = 1.0;
+				break;
+			}
+		case FSKEY_P: // toggle showing of Points
+			if (currShape < 0 || currShape > theShapes.size() - 1) {
+				currShape = 0;
+			}
+			theShapes[currShape].showThePoints = !theShapes[currShape].showThePoints;
+		case FSKEY_H:
+			theShapes[currShape].colorHue = theShapes[currShape].colorHue + 10;
+			if (theShapes[currShape].colorHue > 360) {
+				theShapes[currShape].colorHue = theShapes[currShape].colorHue - 360;
+			}
+		case FSKEY_Z: // Zoom into just the current shape
+			if (currShape < 0 || currShape > theShapes.size() - 1) {
+				break;
+			}
+			else {
+				resetView(theShapes.at(currShape).getLowerBound(), theShapes.at(currShape).getUpperBound());
+				break;
+			}
+		}
 	}
 
 	// set up axes to "math normal" (origin at lower left, y-axis going up)
 	// and pan and scale
 	glLoadIdentity();
 
-	// handle mouse input (OpenGL is still in screen coords)
-	int mouseEvent, leftButton, middleButton, rightButton;
-	int screenX, screenY;
+	//// handle mouse input (OpenGL is still in screen coords)
+	//int mouseEvent, leftButton, middleButton, rightButton;
+	//int screenX, screenY;
 
-	mouseEvent = FsGetMouseEvent(leftButton, middleButton,
-		rightButton, screenX, screenY);
+	//mouseEvent = FsGetMouseEvent(leftButton, middleButton,
+	//	rightButton, screenX, screenY);
 
-	if (leftButton) {
-		// write coords on screen if left button is held down
-		stringstream coordStream; // for displaying coordinates on screen
-		Point2D screenPnt = { screenX, screenY };
-		Point2D worldPnt = getWorldCoords(screenPnt);
+	//if (leftButton) {
+	//	// write coords on screen if left button is held down
+	//	stringstream coordStream; // for displaying coordinates on screen
+	//	Point2D screenPnt = { screenX, screenY };
+	//	Point2D worldPnt = getWorldCoords(screenPnt);
 
-		coordStream.str(""); // reset stream
-		coordStream.precision(4);
-		coordStream << worldPnt.x << ", " << worldPnt.y
-			<< " (" << screenX << ", " << screenY << ")";
-		glColor3ub(60, 230, 60);
-		glRasterPos2i(screenX, screenY - 3); // set position 3 pix above
-		YsGlDrawFontBitmap7x10(coordStream.str().c_str());
-	}
+	//	coordStream.str(""); // reset stream
+	//	coordStream.precision(4);
+	//	coordStream << worldPnt.x << ", " << worldPnt.y
+	//		<< " (" << screenX << ", " << screenY << ")";
+	//	glColor3ub(60, 230, 60);
+	//	glRasterPos2i(screenX, screenY - 3); // set position 3 pix above
+	//	YsGlDrawFontBitmap7x10(coordStream.str().c_str());
+	//}
 
 	glTranslatef(panX, panY, 0);
 	glScalef(scale, -scale, 1);
 
 	// draw all the shapes
-	for (auto& currShape : theShapes) { 
-		currShape.paint(true, false, true);
+	for (auto& currShape : theShapes) {
+		currShape.paint(true, false, currShape.showThePoints, currShape.colorOverride);
 	}
 
 	return key != FSKEY_ESC;

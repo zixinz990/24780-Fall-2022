@@ -38,7 +38,7 @@ public:
 	// returns the intersection of the 2 line segments defined by start and end points given.
 	// The true intersection differs from the mathematical intersection in that the two line segments
 	// (not just their infinite linear extensions) must cross. If there is no true intersection
-	// (i.e., the lines are parallel or the segments don’t cross), the function returns {-INFINITY, -INFINITY}.
+	// (i.e., the lines are parallel or the segments don't cross), the function returns {-INFINITY, -INFINITY}.
 	static Point2D getTrueIntersection(Point2D lineAstart, Point2D lineAend,
 		Point2D lineBstart, Point2D lineBend);
 

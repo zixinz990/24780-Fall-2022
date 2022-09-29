@@ -35,6 +35,8 @@ Shape2D::Shape2D(std::ifstream& input)
 		// reset old coords in preparation for reading next coords
 		oldX = newX; oldY = newY;
 	}
+
+	recalcShape();
 }
 
 bool Shape2D::addPoint(Point2D newPoint, int index)
@@ -47,6 +49,7 @@ bool Shape2D::addPoint(Point2D newPoint, int index)
 		else
 			thePoints.insert(thePoints.begin() + index - 1, newPoint);
 
+		recalcShape();
 		return true;
 	}
 }
@@ -64,6 +67,9 @@ bool Shape2D::addPoint(int index, float ratio)
 		float newY = thePoints[index - 2].y
 			+ ratio * (thePoints[index - 1].y - thePoints[index - 2].y);
 		thePoints.insert(thePoints.begin() + index - 1, { newX, newY });
+
+		recalcShape();
+		return true;
 	}
 }
 
@@ -73,6 +79,8 @@ bool Shape2D::removePoint(int index)
 		return false;
 	else {
 		thePoints.erase(thePoints.begin() + index - 1);
+
+		recalcShape();
 		return true;
 	}
 }
@@ -81,6 +89,17 @@ void Shape2D::paint(bool closed, bool filled, bool showPoints, float colorOverri
 {
 	if (thePoints.size() >= 2) {
 		//Point2D prevPoint = thePoints.front();
+
+		if (colorOverride != -1) {
+			double R, G, B;
+			colorOverride = colorHue; // the initial value of colorHue is 0
+			DrawingUtilNG::hsv2rgb(colorHue, 1., 1., R, G, B);
+			glColor3d(R, G, B);
+		}
+		else {
+			glColor3d(0, 0, 0);
+		}
+
 		glBegin(GL_LINES);
 		glVertex2f(thePoints.front().x, thePoints.front().y);
 
@@ -116,6 +135,44 @@ void Shape2D::paint(bool closed, bool filled, bool showPoints, float colorOverri
 	}
 }
 
+std::ostream& operator<<(std::ostream& os, const Shape2D& aShape)
+{
+	for (auto currPnt : aShape.thePoints) {
+		os << currPnt.x << "\t" << currPnt.y << endl;
+	}
+	return os;
+}
+
+Point2D Shape2D::getLowerBound()
+{
+	lowerBound.x = thePoints[0].x;
+	lowerBound.y = thePoints[0].y;
+	for (int i = 1; i < thePoints.size(); i++) {
+		if (thePoints[i].x < lowerBound.x) {
+			lowerBound.x = thePoints[i].x;
+		}
+		if (thePoints[i].y < lowerBound.y) {
+			lowerBound.y = thePoints[i].y;
+		}
+	}
+	return lowerBound;
+}
+
+Point2D Shape2D::getUpperBound()
+{
+	upperBound.x = thePoints[0].x;
+	upperBound.y = thePoints[0].y;
+	for (int i = 1; i < thePoints.size(); i++) {
+		if (thePoints[i].x > upperBound.x) {
+			upperBound.x = thePoints[i].x;
+		}
+		if (thePoints[i].y > upperBound.y) {
+			upperBound.y = thePoints[i].y;
+		}
+	}
+	return upperBound;
+}
+
 //float Shape2D::perimeter()
 //{
 //	if (thePoints.size() >= 3) { // need at least three points to make sense
@@ -128,10 +185,127 @@ void Shape2D::paint(bool closed, bool filled, bool showPoints, float colorOverri
 //		}
 //		return result;
 //	}
-//	else
+//	else {
 //		return 0.f;  // essentially error
-//
+//	}	
 //}
+
+Point2D Shape2D::getPoint(int index)
+{
+	if (index >= 1 && index <= thePoints.size()) {
+		return thePoints[index - 1];
+	}
+	else {
+		return { -INFINITY, -INFINITY };
+	}
+}
+
+bool Shape2D::movePoint(Point2D newCoords, int index)
+{
+	if (index >= 1 && index <= thePoints.size()) {
+		thePoints[index - 1] = newCoords;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+bool Shape2D::movePointDelta(Point2D deltaCoords, int index)
+{
+	if (index >= 1 && index <= thePoints.size()) {
+		thePoints[index - 1].x = thePoints[index - 1].x + deltaCoords.x;
+		thePoints[index - 1].y = thePoints[index - 1].y + deltaCoords.y;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
+
+int Shape2D::getIndex(Point2D givenCoord, float dist)
+{
+	if (givenCoord.x < lowerBound.x || givenCoord.y < lowerBound.y || givenCoord.x > upperBound.x || givenCoord.y > upperBound.y) {
+		return -1;
+	}
+	else {
+		for (int i = 0; i < thePoints.size(); i++) {
+			if (isInSquare(thePoints[i], givenCoord, dist)) {
+				return i + 1;
+			}
+		}
+	}	
+	return -1;
+}
+
+bool Shape2D::selfIntersects()
+{
+	Point2D intersection;
+	intersection.x = -INFINITY;
+	intersection.y = -INFINITY;
+	Point2D prevPnt = thePoints.back(); // the first line we want to check is from -1 -> 0
+	for (int i = 0; i < thePoints.size() - 2; i++) {
+		if (i == 0) {
+			for (int j = 2; j < thePoints.size() - 1; j++) { // check i-1 -> i and j-1 -> j; don't check neighbouring lines
+				intersection = Line2D::getTrueIntersection(prevPnt, thePoints[i], thePoints[j - 1], thePoints[j]);
+			}
+		}
+		else {
+			for (int j = i + 2; j < thePoints.size(); j++) { // check i-1 -> i and j-1 -> j; don't check neighbouring lines
+				intersection = Line2D::getTrueIntersection(prevPnt, thePoints[i], thePoints[j - 1], thePoints[j]);
+			}
+		}
+		prevPnt = thePoints[i];
+	}
+	if (intersection.x == -INFINITY && intersection.y == -INFINITY) {
+		return false;
+	}
+	else {
+		return true;
+	}
+}
+
+void Shape2D::recalcShape()
+{
+	Point2D prevPnt = thePoints.back();
+
+	if (thePoints.size() >= 3) { // need at least 3 points to calculate perimeter
+		for (auto currPnt : thePoints) { // update lb and ub
+			perim += Line2D::getLength(prevPnt, currPnt);
+			if (currPnt.x < lowerBound.x && currPnt.x > -INFINITY) {
+				lowerBound.x = currPnt.x;
+			}
+			if (currPnt.y < lowerBound.y && currPnt.y > -INFINITY) {
+				lowerBound.y = currPnt.y;
+			}
+			if (currPnt.x > upperBound.x && currPnt.x < INFINITY) {
+				upperBound.x = currPnt.x;
+			}
+			if (currPnt.y > upperBound.y && currPnt.y < INFINITY) {
+				upperBound.y = currPnt.y;
+			}
+			prevPnt = currPnt;
+		}
+	}
+	else { // don't have enough points, can't calculate perim
+		perim = 0.f;
+		for (auto currPnt : thePoints) { // update lb and ub
+			if (currPnt.x < lowerBound.x && currPnt.x > -INFINITY) {
+				lowerBound.x = currPnt.x;
+			}
+			if (currPnt.y < lowerBound.y && currPnt.y > -INFINITY) {
+				lowerBound.y = currPnt.y;
+			}
+			if (currPnt.x > upperBound.x && currPnt.x < INFINITY) {
+				upperBound.x = currPnt.x;
+			}
+			if (currPnt.y > upperBound.y && currPnt.y < INFINITY) {
+				upperBound.y = currPnt.y;
+			}
+			prevPnt = currPnt;
+		}
+	}
+}
 
 bool Shape2D::isInSquare(Point2D testPoint, Point2D targetPoint, float dist)
 {
@@ -141,12 +315,4 @@ bool Shape2D::isInSquare(Point2D testPoint, Point2D targetPoint, float dist)
 	// this works too, but is more complicated, essentially "check if testpoint is outside square"
 	//return !(testPoint.x < (targetPoint.x - dist) || testPoint.x >(targetPoint.x + dist)
 	// || testPoint.y < (targetPoint.y - dist) || testPoint.y >(targetPoint.y + dist));
-}
-
-std::ostream& operator<<(std::ostream& os, const Shape2D& aShape)
-{
-	for (auto currPnt : aShape.thePoints) {
-		os << currPnt.x << "\t" << currPnt.y << endl;
-	}
-	return os;
 }

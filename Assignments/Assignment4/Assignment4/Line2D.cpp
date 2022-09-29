@@ -14,7 +14,7 @@ double Line2D::getLength(float startX, float startY, float endX, float endY)
 {
 	// using square root of the sum of the squares (SRSS)
 
-	return sqrt((endX - startX) * (endX-startX) + (endY-startY) * (endY-startY));
+	return sqrt((endX - startX) * (endX - startX) + (endY - startY) * (endY - startY));
 }
 
 bool Line2D::isBetween(Point2D startPoint, Point2D endPoint, Point2D checkPoint)
@@ -24,7 +24,7 @@ bool Line2D::isBetween(Point2D startPoint, Point2D endPoint, Point2D checkPoint)
 	float distC = getLength(startPoint, endPoint);
 
 	// If A + B = C, checkPoint is indeed between
-	return fabs( distC - distA - distB) < (distA * 1e-5f); // tolerance based on length
+	return fabs(distC - distA - distB) < (distA * 1e-5f); // tolerance based on length
 }
 
 Point2D Line2D::getIntersection(Point2D pnt1, Point2D pnt2, Point2D pnt3, Point2D pnt4)
@@ -44,4 +44,21 @@ Point2D Line2D::getIntersection(Point2D pnt1, Point2D pnt2, Point2D pnt3, Point2
 
 		return { topX / denominator, topY / denominator };
 	}
+}
+
+Point2D Line2D::getTrueIntersection(Point2D lineAstart, Point2D lineAend, Point2D lineBstart, Point2D lineBend)
+{
+	Point2D intersection = getIntersection(lineAstart, lineAend, lineBstart, lineBend);
+	if (isBetween(lineAstart, lineAend, intersection) && isBetween(lineBstart, lineBend, intersection))
+	{
+		return intersection;
+	}
+	else {
+		return { -INFINITY, -INFINITY };
+	}
+}
+
+float Line2D::getAngle(Point2D startPnt, Point2D endPnt)
+{
+	return atan2(endPnt.y - startPnt.y, endPnt.x - startPnt.x);
 }

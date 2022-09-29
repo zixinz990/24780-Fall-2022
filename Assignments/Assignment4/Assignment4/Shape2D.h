@@ -19,23 +19,26 @@
 #pragma once
 #include <vector>
 #include <fstream>
+#include <iostream>
 
 #include "Line2D.h"
+#include "DrawingUtilNG.h"
 
 class Shape2D {
 protected:
 	std::vector<Point2D> thePoints; // stores the vertices that define the shape
 
-	float colorHue = 0;  // stores overall color of shape
-
 	// derived parameters
 	Point2D lowerBound = { -INFINITY, -INFINITY };
-	Point2D upperBound = { -INFINITY, -INFINITY };
+	Point2D upperBound = { INFINITY, INFINITY };
 	float perim = 0.f;
 	float area = 0.f;  // leave blank for now
 
 
 public:
+	float colorHue = 0;  // stores overall color of shape
+	float colorOverride = -1.0f;
+	bool showThePoints = false;
 	// default constructor for the class. Initializes member variables only.
 	Shape2D();
 
@@ -77,12 +80,12 @@ public:
 	friend std::ostream& operator<<(std::ostream& os, const Shape2D& aShape);
 
 	// returns overall width and height of shape
-	float getWidth() { if (lowerBound.x > -INFINITY) return (upperBound.x - lowerBound.x); }
-	float getHeight() { if (lowerBound.x > -INFINITY) return (upperBound.y - lowerBound.y); }
+	float getWidth() { if (lowerBound.x > -INFINITY && upperBound.x < INFINITY) return (upperBound.x - lowerBound.x); }
+	float getHeight() { if (lowerBound.x > -INFINITY && upperBound.x < INFINITY) return (upperBound.y - lowerBound.y); }
 
 	// returns the bounding box of the shape
-	Point2D getLowerBound() { return lowerBound; }
-	Point2D getUpperBound() { return upperBound; }
+	Point2D getLowerBound();
+	Point2D getUpperBound();
 
 	// for PS04, simply returns the pre-calculated length of the perimeter of the shape.
 	float perimeter() { return perim; };
