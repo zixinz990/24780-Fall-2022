@@ -1,0 +1,39 @@
+﻿  DrawingUtilNG.cpp
+  fssimplewindow.cpp
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\fssimplewindow.cpp(946,72): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+  Line2D.cpp
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\Line2D.cpp(22,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\Line2D.cpp(23,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\Line2D.cpp(24,14): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Shape2D.cpp
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\Shape2D.cpp(101,33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  ShapeManager.cpp
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(23,10): warning C4129: '<': unrecognized character escape sequence
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(23,10): warning C4129: '>': unrecognized character escape sequence
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(55,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(56,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(97,12): warning C4309: 'argument': truncation of constant value
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(144,32): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(146,33): warning C4305: '/=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(164,25): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(164,25): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(164,34): warning C4838: conversion from 'int' to 'float' requires a narrowing conversion
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(164,34): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(176,21): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ShapeManager.cpp(176,15): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  ShapeManagerMain.cpp
+  Generating Code...
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\Shape2D.cpp(68): warning C4715: 'Shape2D::addPoint': not all control paths return a value
+  ysglfontdata.c
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17140,28): warning C4244: 'function': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17150,28): warning C4244: 'function': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17389,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17393,29): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17393,66): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17397,37): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17417,35): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17427,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17446,20): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17519,34): warning C4018: '<': signed/unsigned mismatch
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\Assignment4\ysglfontdata.c(17536,40): warning C4018: '<': signed/unsigned mismatch
+  Assignment4.vcxproj -> C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment4\x64\Debug\Assignment4.exe
