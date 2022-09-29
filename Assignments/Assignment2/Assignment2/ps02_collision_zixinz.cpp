@@ -7,6 +7,8 @@
 #include <iomanip>
 #include <random>
 
+
+// generate a random double value given lower bound and upper bound
 double gen_rand_value(double lb, double ub) {
 	std::random_device rd;  // be used to obtain a seed for the random number engine
 	std::mt19937 gen(rd()); // standard mersenne_twister_engine seeded with rd()
@@ -14,7 +16,8 @@ double gen_rand_value(double lb, double ub) {
 	return unif_dist(gen);
 }
 
-double* cal_answer(double massA, double massB, double thetaA1, double thetaB1, double velA1, double velB1, double eRes) {
+// calculate the solution given parameters
+double* cal_solution(double massA, double massB, double thetaA1, double thetaB1, double velA1, double velB1, double eRes) {
 	static double answer_[4];
 
 	double velAx1 = velA1 * cos(thetaA1 / 180 * 3.142);
@@ -36,13 +39,14 @@ double* cal_answer(double massA, double massB, double thetaA1, double thetaB1, d
 	return answer_;
 }
 
+// judge the user's answer
 bool grader(double user_answer, double solution, double tol) {
 	if (abs(user_answer - solution) <= tol) {
 		std::cout << "You are correct! Good job!" << std::endl << std::endl;
 		return true;
 	}
 	else {
-		std::cout << "You are wrong :( The correct answer is: " << solution << std::endl << std::endl;
+		std::cout << "You are wrong :( The correct answer is: " << std::fixed << std::setprecision(3) << solution << std::endl << std::endl;
 		return false;
 	}
 }
@@ -51,6 +55,7 @@ int main() {
 	
 	std::cout << "Two smooth disks A and B, having a mass of 1 kg and 2 kg, respectively, collide with the velocities shown below. If the coefficient of restitution for the disks is e = 0.75, determine the x and y components of the final velocity of each disk just after collision." << std::endl << std::endl;
 	
+	// generate random parameters
 	double massA = gen_rand_value(0.5, 4.0);
 	double massB = gen_rand_value(0.5, 4.0);
 
@@ -84,9 +89,9 @@ int main() {
 
 	std::cout << "coefficient of restitution = " << std::fixed << std::setprecision(2) << eRes << std::endl << std::endl;
 
-	double *answer = cal_answer(massA, massB, thetaA1, thetaB1, velA1, velB1, eRes); // calculate the answer
+	double *answer = cal_solution(massA, massB, thetaA1, thetaB1, velA1, velB1, eRes); // calculate the solution
 
-	double tol = 0.01; // tolerance
+	double tol = 0.005; // tolerance
 
 	double user_velAx2, user_velAy2, user_velBx2, user_velBy2;
 	std::cout << "Please enter your answer of velAx2: " << std::endl;
