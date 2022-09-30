@@ -37,7 +37,7 @@ protected:
 
 public:
 	float colorHue = 0;  // stores overall color of shape
-	float colorOverride = -1.0f;
+	float colorOverride = 1.0f;
 	bool showThePoints = false;
 	// default constructor for the class. Initializes member variables only.
 	Shape2D();

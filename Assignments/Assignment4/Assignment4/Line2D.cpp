@@ -48,8 +48,8 @@ Point2D Line2D::getIntersection(Point2D pnt1, Point2D pnt2, Point2D pnt3, Point2
 
 Point2D Line2D::getTrueIntersection(Point2D lineAstart, Point2D lineAend, Point2D lineBstart, Point2D lineBend)
 {
-	Point2D intersection = getIntersection(lineAstart, lineAend, lineBstart, lineBend);
-	if (isBetween(lineAstart, lineAend, intersection) && isBetween(lineBstart, lineBend, intersection))
+	Point2D intersection = getIntersection(lineAstart, lineAend, lineBstart, lineBend); // get a possible intersection
+	if (isBetween(lineAstart, lineAend, intersection) && isBetween(lineBstart, lineBend, intersection)) // if the candidate is on the two lines
 	{
 		return intersection;
 	}
@@ -60,5 +60,5 @@ Point2D Line2D::getTrueIntersection(Point2D lineAstart, Point2D lineAend, Point2
 
 float Line2D::getAngle(Point2D startPnt, Point2D endPnt)
 {
-	return atan2(endPnt.y - startPnt.y, endPnt.x - startPnt.x);
+	return atan2(endPnt.y - startPnt.y, endPnt.x - startPnt.x); // calculate slope
 }

@@ -88,15 +88,14 @@ bool Shape2D::removePoint(int index)
 void Shape2D::paint(bool closed, bool filled, bool showPoints, float colorOverride)
 {
 	if (thePoints.size() >= 2) {
-		//Point2D prevPoint = thePoints.front();
 
-		if (colorOverride != -1) {
+		if (colorOverride != -1) { // display the shape's own color
 			double R, G, B;
 			colorOverride = colorHue; // the initial value of colorHue is 0
 			DrawingUtilNG::hsv2rgb(colorHue, 1., 1., R, G, B);
 			glColor3d(R, G, B);
 		}
-		else {
+		else { // display black
 			glColor3d(0, 0, 0);
 		}
 
@@ -192,7 +191,7 @@ Point2D Shape2D::getUpperBound()
 
 Point2D Shape2D::getPoint(int index)
 {
-	if (index >= 1 && index <= thePoints.size()) {
+	if (index >= 1 && index <= thePoints.size()) { // if the index is legal
 		return thePoints[index - 1];
 	}
 	else {
@@ -202,7 +201,7 @@ Point2D Shape2D::getPoint(int index)
 
 bool Shape2D::movePoint(Point2D newCoords, int index)
 {
-	if (index >= 1 && index <= thePoints.size()) {
+	if (index >= 1 && index <= thePoints.size()) { // if the index is legal
 		thePoints[index - 1] = newCoords;
 		return true;
 	}
@@ -213,7 +212,7 @@ bool Shape2D::movePoint(Point2D newCoords, int index)
 
 bool Shape2D::movePointDelta(Point2D deltaCoords, int index)
 {
-	if (index >= 1 && index <= thePoints.size()) {
+	if (index >= 1 && index <= thePoints.size()) {  // if the index is legal
 		thePoints[index - 1].x = thePoints[index - 1].x + deltaCoords.x;
 		thePoints[index - 1].y = thePoints[index - 1].y + deltaCoords.y;
 		return true;
@@ -225,7 +224,7 @@ bool Shape2D::movePointDelta(Point2D deltaCoords, int index)
 
 int Shape2D::getIndex(Point2D givenCoord, float dist)
 {
-	if (givenCoord.x < lowerBound.x || givenCoord.y < lowerBound.y || givenCoord.x > upperBound.x || givenCoord.y > upperBound.y) {
+	if (givenCoord.x < lowerBound.x || givenCoord.y < lowerBound.y || givenCoord.x > upperBound.x || givenCoord.y > upperBound.y) { // if the givenCoord is illegal
 		return -1;
 	}
 	else {
@@ -234,7 +233,7 @@ int Shape2D::getIndex(Point2D givenCoord, float dist)
 				return i + 1;
 			}
 		}
-	}	
+	}
 	return -1;
 }
 

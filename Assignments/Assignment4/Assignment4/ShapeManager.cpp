@@ -30,7 +30,6 @@ void ShapeManager::showMenu()
 	cout << "  ESC : exit program" << endl;
 }
 
-// TODO
 void ShapeManager::resetView()
 {
 	// find lower bound and upper bound for all shapes
@@ -87,6 +86,9 @@ void ShapeManager::resetView(Point2D lowerB, Point2D upperB)
 
 void ShapeManager::paintEditIndicator()
 {
+	for (auto& currShape : theShapes) {
+		currShape.colorOverride = -1.0; // all shapes are black at the beginning of edit mode
+	}
 }
 
 Point2D ShapeManager::getScreenCoords(Point2D worldCoords)
@@ -185,23 +187,22 @@ bool ShapeManager::manage()
 			}
 			else {
 				std::cout << "You are in edit mode now." << std::endl;
+				paintEditIndicator();
 			}
 		}
 		else {
 			std::cout << "You leave edit mode now." << std::endl;
 			for (auto& currShape : theShapes) {
-				currShape.colorOverride = -1.0;
+				currShape.colorOverride = 1.0; // let all the shapes display its own color when not in edit mode
 			}
+			currShape = -1;
 		}
 		break;
 	}
 
-	//cout << "    H : change Hue angle of shape by +10 deg" << endl;			    // PS04
-	//cout << "    S : Save the current shape" << endl;			                // PS04
-
 	if (inEditMode) {
 		switch (key) {
-		case FSKEY_COMMA: // cycle through shapes to select current shape
+		case FSKEY_COMMA: // move backward
 			// the initial value of currShape = -1
 			if (currShape == -1) {
 				currShape = 0;
@@ -209,15 +210,15 @@ bool ShapeManager::manage()
 				break;
 			}
 			else {
-				theShapes[currShape].colorOverride = -1.0;
+				theShapes[currShape].colorOverride = -1.0; // before move, make the currShape black
 				currShape--;
 				if (currShape < 0) {
 					currShape = 0;
 				}
-				theShapes[currShape].colorOverride = 1.0;
+				theShapes[currShape].colorOverride = 1.0; // make the new currShape display its own color
 				break;
 			}
-		case FSKEY_DOT: // cycle through shapes to select current shape
+		case FSKEY_DOT: // move forward
 			// the initial value of currShape = -1
 			if (currShape == -1) {
 				currShape = 0;
@@ -225,32 +226,41 @@ bool ShapeManager::manage()
 				break;
 			}
 			else {
-				theShapes[currShape].colorOverride = -1.0;
+				theShapes[currShape].colorOverride = -1.0; // before move, make the currShape black
 				currShape++;
 				if (currShape > theShapes.size() - 1) {
 					currShape = theShapes.size() - 1;
 				}
-				theShapes[currShape].colorOverride = 1.0;
+				theShapes[currShape].colorOverride = 1.0; // make the new currShape display its own color
 				break;
 			}
 		case FSKEY_P: // toggle showing of Points
-			if (currShape < 0 || currShape > theShapes.size() - 1) {
-				currShape = 0;
+			if (currShape < 0 || currShape > theShapes.size() - 1) { // if currShape is illegal
+				std::cout << "You haven't selected any shapes yet!" << std::endl;
+				break;
 			}
 			theShapes[currShape].showThePoints = !theShapes[currShape].showThePoints;
+			break;
 		case FSKEY_H:
-			theShapes[currShape].colorHue = theShapes[currShape].colorHue + 10;
-			if (theShapes[currShape].colorHue > 360) {
-				theShapes[currShape].colorHue = theShapes[currShape].colorHue - 360;
+			if (currShape < 0 || currShape > theShapes.size() - 1) { // if currShape is illegal
+				std::cout << "You haven't selected any shapes yet!" << std::endl;
+				break;
 			}
+			else {
+				theShapes[currShape].colorHue = theShapes[currShape].colorHue + 10;
+			}			
+			break;
 		case FSKEY_Z: // Zoom into just the current shape
-			if (currShape < 0 || currShape > theShapes.size() - 1) {
+			if (currShape < 0 || currShape > theShapes.size() - 1) { // if currShape is illegal
+				std::cout << "You haven't selected any shapes yet!" << std::endl;
 				break;
 			}
 			else {
 				resetView(theShapes.at(currShape).getLowerBound(), theShapes.at(currShape).getUpperBound());
 				break;
 			}
+		case FSKEY_S:
+			break;
 		}
 	}
 
