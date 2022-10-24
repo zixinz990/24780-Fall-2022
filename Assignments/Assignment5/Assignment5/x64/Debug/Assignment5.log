@@ -1,0 +1,13 @@
+﻿  DrawingUtilNG.cpp
+  Entity.cpp
+  fssimplewindow.cpp
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\fssimplewindow.cpp(946,72): warning C4267: 'argument': conversion from 'size_t' to 'DWORD', possible loss of data
+  Maze.cpp
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\Maze.cpp(36,12): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\Maze.cpp(80,66): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\Maze.cpp(82,12): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  PS05maze_main_zixinz.cpp
+  Generating Code...
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\Maze.cpp(149): warning C4715: 'Maze::getEnd': not all control paths return a value
+C:\Users\11861\Desktop\24780\Assignments\Assignment5\Assignment5\Maze.cpp(140): warning C4715: 'Maze::getStart': not all control paths return a value
+  Assignment5.vcxproj -> C:\Users\11861\Desktop\24780\Assignments\Assignment5\x64\Debug\Assignment5.exe
