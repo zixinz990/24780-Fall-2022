@@ -4,7 +4,14 @@ std::vector<Point> trajGenerator::linearInterpolate(Point p1, Point p2) {
 	std::vector<Point> result;
 
 	double distance = sqrt(pow(p1.pos.x - p2.pos.x, 2) + pow(p1.pos.y - p2.pos.y, 2) + pow(p1.pos.z - p2.pos.z, 2));
-	int steps = distance / velocity;
+	int steps = 0;
+	if (distance == 0) {
+		steps = 60;
+	}
+	else {
+		steps = distance / velocity;
+	}
+
 	for (int i = 0; i < steps; i++) {
 		Point aPoint;
 		aPoint.pos.x = p1.pos.x + (p2.pos.x - p1.pos.x) * i / steps;
