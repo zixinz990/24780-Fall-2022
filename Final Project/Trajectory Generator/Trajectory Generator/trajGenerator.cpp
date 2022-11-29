@@ -10,7 +10,20 @@ std::vector<Point> trajGenerator::linearInterpolate(Point p1, Point p2) {
 		aPoint.pos.x = p1.pos.x + (p2.pos.x - p1.pos.x) * i / steps;
 		aPoint.pos.y = p1.pos.y + (p2.pos.y - p1.pos.y) * i / steps;
 		aPoint.pos.z = p1.pos.z + (p2.pos.z - p1.pos.z) * i / steps;
-		aPoint.quat = Utils::slerp(p1.quat, p2.quat, double(i) / steps);
+
+		// aPoint.quat = Utils::slerp(p1.quat, p2.quat, double(i) / steps);
+
+		std::vector<double> Euler = Utils::quat2Euler(
+			Utils::slerp(
+				Utils::euler2Quat(p1.roll, p1.pitch, p1.yaw),
+				Utils::euler2Quat(p2.roll, p2.pitch, p2.yaw),
+				double(i) / steps)
+		);
+
+		aPoint.roll = Euler[0];
+		aPoint.pitch = Euler[1];
+		aPoint.yaw = Euler[2];
+
 		result.push_back(aPoint);
 	}
 	return result;
@@ -41,10 +54,23 @@ void trajGenerator::resetTraj(double radius, double height) {
 		aPoint.pos.x = radius * cos(omgea * i);
 		aPoint.pos.y = radius * sin(omgea * i);
 		aPoint.pos.z = height;
-		aPoint.quat.a = cos(omgea * i / 2);
-		aPoint.quat.b = 0;
-		aPoint.quat.c = 0;
-		aPoint.quat.d = sin(omgea * i / 2);
+
+		// aPoint.quat.a = cos(omgea * i / 2);
+		// aPoint.quat.b = 0;
+		// aPoint.quat.c = 0;
+		// aPoint.quat.d = sin(omgea * i / 2);
+
+		Quaternion quat;
+		quat.a = cos(omgea * i / 2);
+		quat.b = 0;
+		quat.c = sin(omgea * i / 2);
+		quat.d = 0;
+
+		std::vector<double> Euler = Utils::quat2Euler(quat);
+		aPoint.roll = Euler[0];
+		aPoint.pitch = Euler[1];
+		aPoint.yaw = Euler[2];
+
 		traj.push_back(aPoint);
 	}
 }

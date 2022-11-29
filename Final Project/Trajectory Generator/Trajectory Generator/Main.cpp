@@ -16,19 +16,19 @@ int main() {
 	std::cout << "<<<<<<<<<<<< TEST 2 <<<<<<<<<<<<" << std::endl;
 
 	std::cout << std::endl << "Add two points:" << std::endl;
-	Point keyPoint_1 = { {100.0, 0.0, 0.0}, {1.0, 0.0, 0.0, 0.0} };  // key point 1
-	Point keyPoint_2 = { {0.0, 100.0, 0.0}, {1.0, 0.0, 0.0, 0.0} };  // key point 2
+	Point keyPoint_1 = { {100.0, 0.0, 0.0}, 0.0, 0.0, 0.0 };  // key point 1
+	Point keyPoint_2 = { {0.0, 100.0, 0.0}, 0.0, 0.0, 0.0 };  // key point 2
 	trajGen.addKeyPoint(keyPoint_1);
 	trajGen.addKeyPoint(keyPoint_2);
 	trajGen.printKeyPoints();
 
 	std::cout << std::endl << "Insert a point between them:" << std::endl;
-	Point keyPoint_3 = { {50.0, 50.0, 0.0}, {1.0, 0.0, 0.0, 0.0} };  // key point 3
+	Point keyPoint_3 = { {50.0, 50.0, 0.0}, 0.0, 0.0, 0.0 };  // key point 3
 	trajGen.insertKeyPoint(keyPoint_3, 1);
 	trajGen.printKeyPoints();
 
 	std::cout << std::endl << "Add another point:" << std::endl;
-	Point keyPoint_4 = { {0.0, 200.0, 0.0}, {0.7071068, 0.0, 0.0, 0.7071068} };
+	Point keyPoint_4 = { {0.0, 200.0, 0.0}, 0.0, 0.0, 0.0 };
 	trajGen.addKeyPoint(keyPoint_4);
 	trajGen.printKeyPoints();
 
