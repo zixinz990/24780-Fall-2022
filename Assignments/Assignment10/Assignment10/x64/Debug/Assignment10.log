@@ -1,0 +1,13 @@
+﻿  DataManager.cpp
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(25,12): warning C4309: 'argument': truncation of constant value
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(94,23): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(95,24): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(130,39): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(132,39): warning C4244: 'argument': conversion from 'double' to 'GLint', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(290,33): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(290,49): warning C4305: '*=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(292,34): warning C4305: '/=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(292,50): warning C4305: '/=': truncation from 'double' to 'float'
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(357,21): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\Assignment10\DataManager.cpp(357,15): warning C4244: 'argument': conversion from 'int' to 'GLfloat', possible loss of data
+  Assignment10.vcxproj -> C:\Users\11861\Desktop\24780-Fall-2022\Assignments\Assignment10\x64\Debug\Assignment10.exe
